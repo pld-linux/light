@@ -8,8 +8,6 @@ Version:	1.4.10
 Release:	2
 License:	GPL
 Group:		X11/Applications/Networking
-Group(de):	X11/Applikationen/Netzwerkwesen
-Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
 URL:		http://www.ne.jp/asahi/linux/timecop/#light
 BuildRequires:	autoconf
