@@ -1,11 +1,14 @@
-
+#
+# Conditional build:
+# _with_gtk1	- use gtk+ 1.2 instead of 2.x
+#
 %define		minmozver	1.2.1
 
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
 Version:	1.4.12
-Release:	5
+Release:	5.1
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
@@ -13,9 +16,12 @@ Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz
 Source1:	%{name}.desktop
 Patch0:		%{name}-mozilla1.1-noxfer.patch
 Patch1:		%{name}-mozilla1.2b.patch
+Patch2:		%{name}-mozilla1.4.patch
+Patch3:		%{name}-gtk2.patch
 URL:		http://www.ne.jp/asahi/linux/timecop/#light
 BuildRequires:	autoconf
-BuildRequires:	gtk+-devel >= 1.2.6
+%{?_with_gtk1:BuildRequires:	gtk+-devel >= 1.2.6}
+%{!?_with_gtk1:BuildRequires:	gtk+2-devel >= 2.0.0}
 BuildRequires:	libstdc++-devel
 BuildRequires:	mozilla-embedded-devel >= %{minmozver}
 BuildRequires:	zlib-devel
@@ -24,7 +30,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # can be provided by mozilla or mozilla-embedded
 %define		_noautoreqdep	libgtkembedmoz.so libgtksuperwin.so libxpcom.so
-%define		_prefix		/usr/X11R6
 
 %description
 This is "Yet Another Mozilla Based Browser", called "Light".
@@ -36,12 +41,14 @@ To jest jeszcze jedna przegl±darka oparta na Mozilli o nazwie "Light".
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%{!?_with_gtk1:%patch3 -p1}
 
 %build
 %{__autoconf}
 %configure \
-	--with-mozilla-libs=/usr/X11R6/lib \
-	--with-mozilla-includes="/usr/X11R6/include/mozilla -I/usr/X11R6/include/mozilla/gtkembedmoz -I/usr/X11R6/include/mozilla/necko -I/usr/X11R6/include/mozilla/xpcom -I/usr/X11R6/include/mozilla/string -I/usr/X11R6/include/mozilla/embed_base -I/usr/X11R6/include/mozilla/docshell -I/usr/X11R6/include/mozilla/content -I/usr/X11R6/include/mozilla/webbrwsr -I/usr/X11R6/include/mozilla/webbrowserpersist -I/usr/X11R6/include/mozilla/find -I/usr/X11R6/include/mozilla/webshell -I/usr/X11R6/include/mozilla/gfx -I/usr/X11R6/include/mozilla/shistory -I/usr/X11R6/include/mozilla/appcomps -I/usr/X11R6/include/mozilla/uconv -I/usr/X11R6/include/mozilla/widget -I/usr/X11R6/include/mozilla/dom -I/usr/X11R6/include/mozilla/layout -I/usr/X11R6/include/mozilla/mozxfer -I/usr/X11R6/include/mozilla/nkcache -I/usr/X11R6/include/mozilla/pref" \
+	--with-mozilla-libs=/usr/lib \
+	--with-mozilla-includes="/usr/include/mozilla -I/usr/include/mozilla/gtkembedmoz -I/usr/include/mozilla/necko -I/usr/include/mozilla/xpcom -I/usr/include/mozilla/string -I/usr/include/mozilla/embed_base -I/usr/include/mozilla/docshell -I/usr/include/mozilla/content -I/usr/include/mozilla/webbrwsr -I/usr/include/mozilla/webbrowserpersist -I/usr/include/mozilla/find -I/usr/include/mozilla/webshell -I/usr/include/mozilla/gfx -I/usr/include/mozilla/shistory -I/usr/include/mozilla/appcomps -I/usr/include/mozilla/uconv -I/usr/include/mozilla/widget -I/usr/include/mozilla/dom -I/usr/include/mozilla/layout -I/usr/include/mozilla/mozxfer -I/usr/include/mozilla/nkcache -I/usr/include/mozilla/pref" \
 	--with-nspr-includes=/usr/include/nspr \
 	--enable-mozilla-cvs
 
@@ -56,7 +63,7 @@ install src/light $RPM_BUILD_ROOT%{_bindir}/light-bin
 cat > $RPM_BUILD_ROOT%{_bindir}/light <<EOF
 #!/bin/sh
 
-MOZILLA_FIVE_HOME=/usr/X11R6/lib/mozilla
+MOZILLA_FIVE_HOME=/usr/lib/mozilla
 export MOZILLA_FIVE_HOME
 
 exec %{_bindir}/light-bin \$@
