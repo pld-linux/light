@@ -10,7 +10,7 @@ Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-mozilla.patch
 URL:		http://www.ne.jp/asahi/linux/timecop/#light
-BuildRequires:	autocobf
+BuildRequires:	autoconf
 BuildRequires:	gtk+-devel >= 1.2.6
 BuildRequires:	mozilla-devel >= 0.9.2-4
 BuildRequires:	libstdc++-devel
