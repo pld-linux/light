@@ -1,9 +1,9 @@
 #
 # Conditional build:
-# _with_gtk1	- use gtk+ 1.2 instead of 2.x
+%bcond_with	gtk1	# use gtk+ 1.2 instead of 2.x
 #
 %define		minmozver	3:1.2.1
-%define		gtkv		gtk%{?_with_gtk1:1}%{!?_with_gtk1:2}
+%define		gtkv		gtk%{?with_gtk1:1}%{!?with_gtk1:2}
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
@@ -20,12 +20,12 @@ Patch2:		%{name}-mozilla1.4.patch
 Patch3:		%{name}-gtk2.patch
 URL:		http://www.ne.jp/asahi/linux/timecop/#light
 BuildRequires:	autoconf
-%{?_with_gtk1:BuildRequires:	gtk+-devel >= 1.2.6}
-%{!?_with_gtk1:BuildRequires:	gtk+2-devel >= 2.0.0}
+%{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.6}
+%{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.0.0}
 BuildRequires:	libstdc++-devel
 BuildRequires:	mozilla-embedded(%{gtkv}) >= %{minmozver}
 BuildRequires:	mozilla-embedded-devel >= %{minmozver}
-%{!?_with_gtk1:BuildRequires:	pkgconfig}
+%{!?with_gtk1:BuildRequires:	pkgconfig}
 BuildRequires:	zlib-devel
 Requires:	mozilla-embedded(%{gtkv}) = %(rpm -q --qf '%{EPOCH}:%{VERSION}' --whatprovides mozilla-embedded)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -44,7 +44,7 @@ To jest jeszcze jedna przegl±darka oparta na Mozilli o nazwie "Light".
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%{!?_with_gtk1:%patch3 -p1}
+%{!?with_gtk1:%patch3 -p1}
 
 %build
 %{__autoconf}
@@ -65,13 +65,13 @@ install src/light $RPM_BUILD_ROOT%{_bindir}/light-bin
 cat > $RPM_BUILD_ROOT%{_bindir}/light <<EOF
 #!/bin/sh
 
-MOZILLA_FIVE_HOME=/usr/lib/mozilla
+MOZILLA_FIVE_HOME=/usr/%{_lib}/mozilla
 export MOZILLA_FIVE_HOME
 
 exec %{_bindir}/light-bin \$@
 EOF
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
+install %{SOURCE1} $RPM_BUILD_ROOT%{_desktopdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,4 +80,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO doc/*.html
 %attr(755,root,root) %{_bindir}/*
-%{_applnkdir}/Network/WWW/*.desktop
+%{_desktopdir}/*.desktop
