@@ -1,11 +1,11 @@
 
-%define		minmozver	1.1
+%define		minmozver	1.2.1
 
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
 Version:	1.4.12
-Release:	4
+Release:	5
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
@@ -24,7 +24,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # can be provided by mozilla or mozilla-embedded
 %define		_noautoreqdep	libgtkembedmoz.so libgtksuperwin.so libxpcom.so
-
+%define		_prefix		/usr/X11R6
 
 %description
 This is "Yet Another Mozilla Based Browser", called "Light".
