@@ -2,8 +2,8 @@
 # Conditional build:
 # _with_gtk1	- use gtk+ 1.2 instead of 2.x
 #
-%define		minmozver	1.2.1
-
+%define		minmozver	3:1.2.1
+%define		gtkv		gtk%{?_with_gtk1:1}%{!?_with_gtk1:2}
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
@@ -23,9 +23,10 @@ BuildRequires:	autoconf
 %{?_with_gtk1:BuildRequires:	gtk+-devel >= 1.2.6}
 %{!?_with_gtk1:BuildRequires:	gtk+2-devel >= 2.0.0}
 BuildRequires:	libstdc++-devel
+BuildRequires:	mozilla-embedded(%{gtkv}) >= %{minmozver}
 BuildRequires:	mozilla-embedded-devel >= %{minmozver}
 BuildRequires:	zlib-devel
-Requires:	mozilla-embedded = %(rpm -q --qf '%{VERSION}' --whatprovides mozilla-embedded)
+Requires:	mozilla-embedded(%{gtkv}) = %(rpm -q --qf '%{EPOCH}:%{VERSION}' --whatprovides mozilla-embedded)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # can be provided by mozilla or mozilla-embedded
@@ -73,11 +74,6 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 
 %clean
 rm -rf $RPM_BUILD_ROOT
-
-%post
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %files
 %defattr(644,root,root,755)
