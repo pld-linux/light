@@ -1,0 +1,105 @@
+--- light-1.4.12/src/moz_about.cpp.orig	Wed Jun 25 13:19:13 2003
++++ light-1.4.12/src/moz_about.cpp	Wed Jun 25 14:39:14 2003
+@@ -3,7 +3,6 @@
+ #include "nsIIOService.h"
+ #include "nsIServiceManager.h"
+ #include "nsIStringStream.h"
+-#include "nsXPComFactory.h"
+ #include "nsNetUtil.h"
+ #include "nsISupportsObsolete.h"
+ 
+@@ -57,8 +56,7 @@
+ 
+     rv = NS_NewInputStreamChannel(&channel, aURI, in,
+ 	    NS_LITERAL_CSTRING("text/html"),
+-	    NS_LITERAL_CSTRING(""),
+-	    strlen(dest));
++	    NS_LITERAL_CSTRING(""));
+ 
+     if (NS_FAILED(rv)) {
+ 	g_free(dest);
+@@ -82,7 +80,7 @@
+     return rv;
+ }
+ 
+-NS_DEF_FACTORY(AboutLight, AboutLight);
++/*NS_DEF_FACTORY(AboutLight, AboutLight);
+ 
+ nsresult NS_NewAboutLightFactory(nsIFactory **aFactory)
+ {
+@@ -96,7 +94,7 @@
+     NS_ADDREF(result);
+     *aFactory = result;
+     return NS_OK;
+-}
++}*/
+ 
+ /* about:manual */
+ class AboutManual : public nsIAboutModule 
+@@ -135,8 +133,7 @@
+ 
+     rv = NS_NewInputStreamChannel(&channel, aURI, in, 
+ 	    NS_LITERAL_CSTRING("text/html"),
+-	    NS_LITERAL_CSTRING(""),
+-	    strlen(dest));
++	    NS_LITERAL_CSTRING(""));
+ 
+     if (NS_FAILED(rv)) {
+ 	g_free(dest);
+@@ -160,7 +157,7 @@
+     return rv;
+ }
+ 
+-NS_DEF_FACTORY(AboutManual, AboutManual);
++/*NS_DEF_FACTORY(AboutManual, AboutManual);
+ 
+ nsresult NS_NewAboutManualFactory(nsIFactory **aFactory)
+ {
+@@ -174,4 +171,4 @@
+     NS_ADDREF(result);
+     *aFactory = result;
+     return NS_OK;
+-}
++}*/
+--- light-1.4.12/src/moz_main.cpp.orig	Wed Jun 25 13:19:13 2003
++++ light-1.4.12/src/moz_main.cpp	Wed Jun 25 14:53:19 2003
+@@ -88,7 +88,7 @@
+   static NS_DEFINE_CID(kAboutManualCID, ABOUT_MANUAL_MODULE_CID);
+ 
+   /* about:light */
+-  nsCOMPtr < nsIFactory > aboutfactory;
++/*nsCOMPtr < nsIFactory > aboutfactory;
+   rv = NS_NewAboutLightFactory(getter_AddRefs(aboutfactory));
+   if (NS_FAILED(rv))
+     return;
+@@ -96,10 +96,10 @@
+   nsComponentManager::RegisterFactory(kAboutLightCID,
+                                       "Light",
+                                       ABOUT_LIGHT_CONTRACTID,
+-                                      aboutfactory, PR_TRUE);
++                                      aboutfactory, PR_TRUE);*/
+ 
+   /* about:manual */
+-  nsCOMPtr < nsIFactory > manualfactory;
++/*nsCOMPtr < nsIFactory > manualfactory;
+   rv = NS_NewAboutManualFactory(getter_AddRefs(manualfactory));
+   if (NS_FAILED(rv))
+     return;
+@@ -107,7 +107,7 @@
+   nsComponentManager::RegisterFactory(kAboutManualCID,
+                                       "Manual",
+                                       ABOUT_MANUAL_CONTRACTID,
+-                                      manualfactory, PR_TRUE);
++                                      manualfactory, PR_TRUE);*/
+ }
+ 
+ extern "C" void moz_history_init(Browser *browser)
+@@ -156,7 +156,7 @@
+     nsCOMPtr < nsISupports > cssupports =
+         (dont_AddRef) (cs_list->ElementAt(i));
+     nsCOMPtr < nsIAtom > csatom(do_QueryInterface(cssupports));
+-    nsString charset_ns = nsnull, charset_title_ns = nsnull;
++    nsString charset_ns /*= nsnull*/, charset_title_ns /*= nsnull*/;
+ 
+     /* charset name */
+     rv = csatom->ToString(charset_ns);

@@ -1,0 +1,108 @@
+--- light-1.4.12/configure.in.orig	Sat Jun  8 04:06:52 2002
++++ light-1.4.12/configure.in	Wed Jun 25 12:52:09 2003
+@@ -54,12 +54,11 @@
+ AC_CHECK_LIB(nspr4, PR_Init, [nspr_found="yes"], [], [])
+ AC_CHECK_LIB(plc4, PL_strcmp, [plc4_found="yes"], [], [-lnspr4])
+ AC_CHECK_LIB(plds4, PL_NewHashTable, [plds4_found="yes"], [], [-lnspr4])
+-AC_CHECK_LIB(gtksuperwin, gdk_superwin_get_type, [superwin_found="yes"], [], [])
+ AC_CHECK_LIB(gtkembedmoz, gtk_moz_embed_get_type, [embed_found="yes"])
+ 
+ AC_MSG_CHECKING(for Mozilla)
+ if test -z "$nspr_found" -o -z "$plc4_found" -o -z "$plds4_found" -o \
+-	-z "$superwin_found" -o -z "$embed_found"
++	-z "$embed_found"
+ then
+     AC_MSG_RESULT(no)
+     AC_MSG_ERROR([
+--- light-1.4.12/src/Makefile.in.orig	Sat Jun  8 04:06:52 2002
++++ light-1.4.12/src/Makefile.in	Wed Jun 25 12:53:06 2003
+@@ -10,14 +10,14 @@
+ OPT		= -O3
+ WARN		= -Wall
+ MOZ_CFLAGS	= $(OPT) $(WARN) @PTHREAD_CFLAGS@
+-GTK_INCLUDE	= $(shell gtk-config --cflags)
+-GTK_LIBS	= $(shell gtk-config --libs)
++GTK_INCLUDE	= $(shell pkg-config --cflags gtk+-2.0)
++GTK_LIBS	= $(shell pkg-config --libs gtk+-2.0)
+ MOZ_INCLUDE	= @MOZILLA_INCLUDES@
+ MOZ_LIBS	= @MOZILLA_LIBS@
+ 
+ CFLAGS		= $(MOZ_CFLAGS) $(GTK_INCLUDE) $(MOZ_INCLUDE) @DEFS@
+ CXXFLAGS	= $(MOZ_CFLAGS) $(GTK_INCLUDE) $(MOZ_INCLUDE) @DEFS@
+-LDFLAGS		= $(GTK_LIBS) $(MOZ_LIBS) -lgtkembedmoz -lplds4 -lplc4 -lnspr4 -lgtksuperwin -lxpcom @PTHREAD_LDFLAGS@ -lz
++LDFLAGS		= $(GTK_LIBS) $(MOZ_LIBS) -lgtkembedmoz -lplds4 -lplc4 -lnspr4 -lxpcom @PTHREAD_LDFLAGS@ -lz
+ 
+ TARGET		= light
+ 
+--- light-1.4.12/src/fifo.c.orig	Sat Jun  8 04:06:52 2002
++++ light-1.4.12/src/fifo.c	Wed Jun 25 13:01:05 2003
+@@ -28,7 +28,7 @@
+     GtkWidget *vbox;
+     GtkWidget *entry;
+ 
+-    dialog = gtk_window_new(GTK_WINDOW_DIALOG);
++    dialog = gtk_window_new(GTK_WINDOW_POPUP);
+     gtk_window_set_title(GTK_WINDOW(dialog), "Fifo Add - Note");
+     gtk_window_set_position(GTK_WINDOW(dialog), GTK_WIN_POS_MOUSE);
+     gtk_window_set_policy(GTK_WINDOW(dialog), FALSE, FALSE, TRUE);
+--- light-1.4.12/src/ui.c.orig	Sat Jun  8 04:06:52 2002
++++ light-1.4.12/src/ui.c	Wed Jun 25 13:10:34 2003
+@@ -92,8 +92,8 @@
+ 
+     /* menubar */
+     browser->menubar = light_menubar_new(accel, browser);
+-    gtk_menu_bar_set_shadow_type(GTK_MENU_BAR(browser->menubar),
+-	    GTK_SHADOW_ETCHED_IN);
++    /*gtk_menu_bar_set_shadow_type(GTK_MENU_BAR(browser->menubar),
++	    GTK_SHADOW_ETCHED_IN);*/
+     gtk_box_pack_start(GTK_BOX(vbox), browser->menubar, FALSE, FALSE,
+ 	    NO_SPACING);
+ 
+@@ -152,13 +152,14 @@
+     /* handle = gtk_handle_box_new(); frame looks better? */
+     handle = gtk_frame_new(NULL);
+     gtk_frame_set_shadow_type(GTK_FRAME(handle), GTK_SHADOW_ETCHED_IN);
+-    toolbar = GTK_TOOLBAR(gtk_toolbar_new(GTK_ORIENTATION_HORIZONTAL,
+-		GTK_TOOLBAR_BOTH));
++    toolbar = GTK_TOOLBAR(gtk_toolbar_new());
++    gtk_toolbar_set_orientation(toolbar, GTK_ORIENTATION_HORIZONTAL);
++    gtk_toolbar_set_style(toolbar, GTK_TOOLBAR_BOTH);
+     gtk_container_add(GTK_CONTAINER(handle), GTK_WIDGET(toolbar));
+ 
+-    gtk_toolbar_set_space_size(toolbar, UI_SPACING);
++    /*gtk_toolbar_set_space_size(toolbar, UI_SPACING);*/
+     gtk_container_set_border_width(GTK_CONTAINER(toolbar), UI_SPACING);
+-    gtk_toolbar_set_button_relief(toolbar, GTK_RELIEF_NONE);
++    /*gtk_toolbar_set_button_relief(toolbar, GTK_RELIEF_NONE);*/
+ 
+     browser->btn.back = gtk_toolbar_append_item(toolbar,
+ 	    config.pixmaps != 1 ? "Back" : NULL,
+@@ -400,7 +401,7 @@
+     GtkAccelGroup *accel;
+     int key;
+ 
+-    window = gtk_window_new(GTK_WINDOW_DIALOG);
++    window = gtk_window_new(GTK_WINDOW_POPUP);
+     accel = gtk_accel_group_new();
+ 
+     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_MOUSE);
+--- light-1.4.12/src/ui_cb.c.orig	Sat Jun  8 04:06:52 2002
++++ light-1.4.12/src/ui_cb.c	Wed Jun 25 14:58:20 2003
+@@ -151,7 +151,7 @@
+ 
+ 	    window = light_fifo_new(browser);
+ 	    width = window->allocation.width;
+-	    gtk_window_reposition(GTK_WINDOW(window), x - width, y);
++	    _gtk_window_reposition(GTK_WINDOW(window), x - width, y);
+ 	    gtk_grab_add(window);
+ 	}
+ 	break;
+@@ -481,7 +481,7 @@
+     width = window->allocation.width;
+     x = (int)event->x_root;
+     y = (int)event->y_root;
+-    gtk_window_reposition(GTK_WINDOW(window), x - width, y);
++    _gtk_window_reposition(GTK_WINDOW(window), x - width, y);
+ 
+     gtk_grab_add(window);
+ }
