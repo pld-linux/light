@@ -5,10 +5,11 @@ Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
 Version:	1.4.12
-Release:	3
+Release:	4
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
+Source1:	%{name}.desktop
 Patch0:		%{name}-mozilla1.1-noxfer.patch
 Patch1:		%{name}-mozilla1.2b.patch
 URL:		http://www.ne.jp/asahi/linux/timecop/#light
@@ -47,7 +48,7 @@ To jest jeszcze jedna przegl±darka oparta na Mozilli o nazwie "Light".
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW}
 
 install src/light $RPM_BUILD_ROOT%{_bindir}/light-bin
 
@@ -59,6 +60,8 @@ export MOZILLA_FIVE_HOME
 
 exec %{_bindir}/light-bin \$@
 EOF
+
+install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -72,3 +75,4 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO doc/*.html
 %attr(755,root,root) %{_bindir}/*
+%{_applnkdir}/Network/WWW/*.desktop
