@@ -1,8 +1,11 @@
+
+%define		mozver	0.9.7
+
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
 Version:	1.4.10
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
@@ -12,9 +15,9 @@ URL:		http://www.ne.jp/asahi/linux/timecop/#light
 BuildRequires:	autoconf
 BuildRequires:	gtk+-devel >= 1.2.6
 BuildRequires:	libstdc++-devel
-BuildRequires:	mozilla-embedded-devel >= 0.9.2-4
+BuildRequires:	mozilla-embedded-devel = %{mozver}
 BuildRequires:	zlib-devel
-Requires:	mozilla-embedded >= 0.9.2-4
+Requires:	mozilla-embedded = %{mozver}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # can be provided by mozilla or mozilla-embedded
@@ -37,7 +40,8 @@ autoconf
 %configure \
 	--with-mozilla-libs=/usr/X11R6/lib \
 	--with-mozilla-includes="/usr/X11R6/include/mozilla -I/usr/X11R6/include/mozilla/gtkembedmoz -I/usr/X11R6/include/mozilla/necko -I/usr/X11R6/include/mozilla/xpcom -I/usr/X11R6/include/mozilla/string -I/usr/X11R6/include/mozilla/embed_base -I/usr/X11R6/include/mozilla/docshell -I/usr/X11R6/include/mozilla/content -I/usr/X11R6/include/mozilla/webbrwsr -I/usr/X11R6/include/mozilla/webbrowserpersist -I/usr/X11R6/include/mozilla/find -I/usr/X11R6/include/mozilla/webshell -I/usr/X11R6/include/mozilla/gfx -I/usr/X11R6/include/mozilla/shistory -I/usr/X11R6/include/mozilla/appcomps -I/usr/X11R6/include/mozilla/uconv -I/usr/X11R6/include/mozilla/widget -I/usr/X11R6/include/mozilla/dom -I/usr/X11R6/include/mozilla/layout -I/usr/X11R6/include/mozilla/mozxfer -I/usr/X11R6/include/mozilla/nkcache -I/usr/X11R6/include/mozilla/pref" \
-	--with-nspr-includes=/usr/include/nspr
+	--with-nspr-includes=/usr/include/nspr \
+	--enable-mozilla-cvs
 
 %{__make} OPT="%{rpmcflags}"
 
