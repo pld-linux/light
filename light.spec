@@ -21,7 +21,7 @@ Patch3:		%{name}-gtk2.patch
 URL:		http://www.ne.jp/asahi/linux/timecop/#light
 BuildRequires:	autoconf
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.6}
-%{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.0.0}
+%{!?with_gtk1:BuildRequires:	gtk+2-devel >= 1:2.0.0}
 BuildRequires:	libstdc++-devel
 BuildRequires:	mozilla-embedded(%{gtkv}) >= %{minmozver}
 BuildRequires:	mozilla-embedded-devel >= %{minmozver}
