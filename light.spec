@@ -1,7 +1,7 @@
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
-Version:	1.4.6
+Version:	1.4.7
 Release:	1
 License:	GPL
 Group:		X11/Applications/Networking
