@@ -1,5 +1,5 @@
 
-%define		minmozver	0.9.7
+%define		minmozver	0.9.9
 
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
