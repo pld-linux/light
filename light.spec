@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_with	gtk1	# use gtk+ 1.2 instead of 2.x
+%bcond_with	gtk1	# use GTK+ 1.2 instead of 2.x
 #
 %define		minmozver	3:1.2.1
 %define		gtkv		gtk%{?with_gtk1:1}%{!?with_gtk1:2}
