@@ -1,11 +1,11 @@
 
-%define		mozver	0.9.7
+%define		minmozver	0.9.7
 
 Summary:	Light - Yet Another Mozilla Based Browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
 Version:	1.4.10
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
@@ -13,9 +13,9 @@ URL:		http://www.ne.jp/asahi/linux/timecop/#light
 BuildRequires:	autoconf
 BuildRequires:	gtk+-devel >= 1.2.6
 BuildRequires:	libstdc++-devel
-BuildRequires:	mozilla-embedded-devel = %{mozver}
+BuildRequires:	mozilla-embedded-devel >= %{minmozver}
 BuildRequires:	zlib-devel
-Requires:	mozilla-embedded = %{mozver}
+Requires:	mozilla-embedded = %(rpm -q --qf '%{VERSION}' --whatprovides mozilla-embedded)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # can be provided by mozilla or mozilla-embedded
