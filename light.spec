@@ -9,6 +9,7 @@ Release:	4
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	http://www.ne.jp/asahi/linux/timecop/software/%{name}-%{version}.tar.bz2
+# Source0-md5:	b83da71a3504cbb7812d0b56bf709cd9
 Source1:	%{name}.desktop
 Patch0:		%{name}-mozilla1.1-noxfer.patch
 Patch1:		%{name}-mozilla1.2b.patch
