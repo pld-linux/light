@@ -25,6 +25,7 @@ BuildRequires:	autoconf
 BuildRequires:	libstdc++-devel
 BuildRequires:	mozilla-embedded(%{gtkv}) >= %{minmozver}
 BuildRequires:	mozilla-embedded-devel >= %{minmozver}
+%{!?_with_gtk1:BuildRequires:	pkgconfig}
 BuildRequires:	zlib-devel
 Requires:	mozilla-embedded(%{gtkv}) = %(rpm -q --qf '%{EPOCH}:%{VERSION}' --whatprovides mozilla-embedded)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
