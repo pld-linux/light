@@ -1,0 +1,29 @@
+--- light-1.4.12/src/moz_main.cpp.orig	Sat Jun  8 04:06:52 2002
++++ light-1.4.12/src/moz_main.cpp	Sat Oct 19 21:17:54 2002
+@@ -44,7 +44,7 @@
+ #endif
+ 
+ #include <nsIURI.h>
+-#include <nsIStreamTransfer.h>
++//   #include <nsIStreamTransfer.h> --- REMOVED
+ 
+ #include <nsNetUtil.h>
+ 
+@@ -313,6 +313,9 @@
+ 
+ extern "C" void moz_save_link(Browser *browser, const char *url)
+ {
++#ifdef NS_ISTREAMTRANSFER_CONTRACTID
++        /* blegh, xfer component was removed from mozilla 1.1;
++         * don't know how to fix - moz_save_link won't work with new mozilla :/ */
+   nsresult rv;
+   nsCOMPtr < nsIDOMWindow > DOMWindow;
+   nsIWebBrowser *wb = nsnull;
+@@ -337,6 +340,7 @@
+ 
+   xfer->SelectFileAndTransferLocationSpec(url, DOMWInternal, "", "",
+                                           PR_TRUE, nsnull, nsnull);
++#endif
+ }
+ 
+ extern "C" void moz_save_cached(Browser *browser, const char *uri,
