@@ -4,7 +4,7 @@
 #
 %define		minmozver	3:1.2.1
 %define		gtkv		gtk%{?with_gtk1:1}%{!?with_gtk1:2}
-Summary:	Light - Yet Another Mozilla Based Browser
+Summary:	Light - yet another Mozilla based browser
 Summary(pl):	Light - jeszcze jedna przegl±darka oparta na Mozilli (gecko)
 Name:		light
 Version:	1.4.12
